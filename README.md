@@ -17,8 +17,11 @@ The program counts the number of instances for each motif and outputs the result
 ```
 python main.py
 ``` 
-6. follow the prompt instructions
-7. The output files name is depends the ex number:
+5. Follow the prompt instructions:
+   - First select the part you want to run (part a or b)
+   - For Part A you will need to enter a positive number n (the size of the sub-graphs)
+   - For Part A you will need to enter a positive number n (the size of the sub-graphs) and a path to a txt file where the given graph is located
+6. The output files name is depends the ex number:
    - In Part A: the results will appeare in `subgraphs_n.txt`, where 'n' is the size that you have entered in the prompt.
    - In Part B: the results will appeare in `count_motifs.txt`.
 
