@@ -2,18 +2,17 @@ import numpy as np
 import networkx as nx
 from itertools import combinations
 
-def from_b_to_graph(binary_list, n):
-
-    matrix=np.zeros((n,n))
-    for i in range(len(binary_list)):
-        if(binary_list[i]==1):
+def from_b_to_graph(binary_string, n):
+    graph=nx.DiGraph()
+    for i in range(len(binary_string)):
+        if(binary_string[i]=="1"):
             source=int(i/(n-1))
             target=int(i%(n-1))
             if(target>=source):
                 target+=1
-
-            matrix[source,target]=1
-    return nx.DiGraph(matrix)
+            graph.add_edge(source,target)
+    graph.add_nodes_from(range(n))
+    return graph
 
 def to_txt_a(graphs, n):
     with open(f"subgraphs_{n}.txt", "w") as file:
@@ -21,7 +20,7 @@ def to_txt_a(graphs, n):
         print(f"count={len(graphs)}", file=file)
         for i in range(len(graphs)):
             print(f"#{i+1}", file=file)
-            edges = list(graphs[i].edges())
+            edges = list(graphs[i][0].edges())
             for edge in edges:
                 print(f"{edge[0]+1} {edge[1]+1}", file=file)
 
@@ -33,25 +32,24 @@ def to_txt_b(motifs, subgraphs):
             print(f"count={motifs_count(motifs[i], subgraphs)}", file=file)
 
 def not_isomorphic(new, graphs):
-    for graph in graphs:
-        if nx.is_isomorphic(new, graph):
+    edges=new.number_of_edges()
+    for tuple in graphs:
+        if tuple[1]==edges and nx.is_isomorphic(new, tuple[0]):
             return False
     return True
 
 def create_all_graphs(n):
     if n==1:
-        return [nx.DiGraph(np.array([[1]]))]
-    total=n*(n-1)
-    graphs=[]
-    for i in range(1,2**total):
-        binary_string = bin(i)[2:].zfill(total)
-        binary_list = [int(bit) for bit in binary_string]
-        if(binary_list.count(1)>=n-1): #check if the graph can be connected
-            graph = from_b_to_graph(binary_list, n)
-            if(nx.is_weakly_connected(graph) and not_isomorphic(graph, graphs)):
-                graphs.append(graph)
-
-    return graphs
+        return [[nx.DiGraph(np.array([[1]])),1]]
+    total=2**(n*(n-1))
+    graphs_edges=[] #list of tuples (graph,graph.number_of_edges())
+    for i in range(1,total):
+        binary_string = bin(i)[2:]
+        if(int(binary_string.count("1"))>=n-1): #check if the graph can be connected
+            graph = from_b_to_graph(binary_string, n)
+            if(nx.is_weakly_connected(graph) and not_isomorphic(graph, graphs_edges)):
+                graphs_edges.append([graph,graph.number_of_edges()])
+    return graphs_edges
 
 
 
@@ -61,7 +59,6 @@ def create_graph_from_file(n, file_name):
         for line in file:
             edge = line.split()
             graph.add_edge(int(edge[0]) - 1, int(edge[1]) - 1)
-
     return graph
 
 def motifs_count(motif, subgraphs):
@@ -104,6 +101,15 @@ def ex_b():
 
 
 if __name__ == '__main__':
+
+
+    for i in range(1, 6):
+        print(dt.datetime.now())
+        start = t.time()
+        graphs = create_all_graphs(i)
+        to_txt_a(graphs, i)
+        end = t.time()
+        print(f"n={i} time={dt.timedelta(seconds=end-start)}")
     print("Please enter the exercise number (a/b):")
     ex=input()
     if(ex=="a"):
@@ -112,6 +118,3 @@ if __name__ == '__main__':
         ex_b()
     else:
         print("Error: invalid input")
-
-
-
