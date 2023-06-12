@@ -101,16 +101,7 @@ def ex_b():
 
 
 if __name__ == '__main__':
-
-
-    for i in range(1, 6):
-        print(dt.datetime.now())
-        start = t.time()
-        graphs = create_all_graphs(i)
-        to_txt_a(graphs, i)
-        end = t.time()
-        print(f"n={i} time={dt.timedelta(seconds=end-start)}")
-    print("Please enter the exercise number (a/b):")
+    print("Please enter a letter (a/b) for the exercise you want to run:")
     ex=input()
     if(ex=="a"):
         ex_a()
