@@ -4,7 +4,7 @@
 
 This program generates connected sub-graphs of size n and counts the number of instances of each motif in a given graph and outputs the results to a textual file.
 
-#### Run Time:
+#### Run Time (Ex c&d):
 Here are the runtime for our code for part A:
 - The maximal number n for which your program can complete successfully within 1 hour of computing time **is 4**
 - The maximal number n for which your program can complete successfully within 2 hours of computing time **is 5**
