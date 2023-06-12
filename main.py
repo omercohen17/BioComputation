@@ -1,6 +1,8 @@
 import numpy as np
 import networkx as nx
 from itertools import combinations
+import time as t
+import datetime as dt
 
 def from_b_to_graph(binary_string, n):
     graph=nx.DiGraph()
@@ -81,8 +83,11 @@ def get_subgraphs(graph, n):
 def ex_a():
     print("Please enter positive integer n:")
     n=int(input())
+    start = t.time()
     graphs=create_all_graphs(n)
     to_txt_a(graphs, n)
+    end = t.time()
+    print(f"n={n} time={dt.timedelta(seconds=end - start)}")
 
 def ex_b():
     print("Please enter positive integer n:")
